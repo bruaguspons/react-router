@@ -1,32 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { Suspense, lazy } from 'react'
 import './App.css'
-
+import { BrowserRouter, Navigate, Route } from 'react-router-dom'
+import { PublicRoutes } from './routes/public.routes'
+import { PrivateRoutes } from './routes/private.routes'
+import { AuthGuard } from './guards/auth.guards'
+import RouteNotFound from './utils/RouteNotFound'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 function App() {
-  const [count, setCount] = useState(0)
-
+  const Login = lazy(() => import('./pages/login/Login'))
+  const Private = lazy(() => import('./pages/private/Private'))
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Suspense fallback={<>cargando</>}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <RouteNotFound>
+              <Route path='/' element={<Navigate to={PrivateRoutes.PRIVATE} />}></Route>
+              <Route path={PublicRoutes.LOGIN} element={<Login />}></Route>
+              <Route element={<AuthGuard />}>
+                <Route path={`${PrivateRoutes.PRIVATE}/*`} element={<Private />}></Route>
+              </Route>
+            </RouteNotFound>
+          </BrowserRouter>
+        </Provider>
+      </Suspense>
     </div>
   )
 }
