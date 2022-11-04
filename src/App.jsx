@@ -11,7 +11,7 @@ function App() {
   const Login = lazy(() => import('./pages/login/Login'))
   const Private = lazy(() => import('./pages/private/Private'))
   return (
-    <div className="App">
+    <div className="w-full h-screen flex justify-center items-center">
       <Suspense fallback={<>cargando</>}>
         <Provider store={store}>
           <BrowserRouter>

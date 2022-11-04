@@ -26,9 +26,11 @@ function Login() {
         }
     }
     return (
-        <div>
-            <h2>Login</h2>
-            <button onClick={login}>Login</button>
+        <div className='h-2/3 w-1/3 bg-blue-200 flex flex-col justify-evenly items-center border-2 border-blue-600 rounded-md'>
+            <h2 className='font-bold text-white text-5xl'>Login</h2>
+            <input type="text" placeholder='UserName' className='' />
+            <input type="password" name="" id="" placeholder='Password' />
+            <button className='h-10 w-1/3 bg-blue-600 border-2 border-blue-900 rounded-md font-bold text-white text-md hover:bg-blue-900 hover:border-gray-700' onClick={login}>Login</button>
         </div>
     )
 }
